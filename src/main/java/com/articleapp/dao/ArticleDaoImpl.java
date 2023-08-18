@@ -29,13 +29,13 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public List<Article> selectUserArticles(String username) {
-        String SELECT_USER_TODOS_SQL = "SELECT id, title,article, username FROM article WHERE username=? ";
+        String SELECT_USER_TODOS_SQL = "SELECT id, title,article, username, created_at, updated_at FROM article WHERE username=?" +
+                "ORDER BY created_at DESC, updated_at DESC";
         List<Article> articles = new ArrayList<>();
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement statement = connection.prepareStatement(SELECT_USER_TODOS_SQL);
             statement.setString(1, username);
-
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
@@ -43,7 +43,9 @@ public class ArticleDaoImpl implements ArticleDao {
                 article.setId(resultSet.getInt("id"));
                 article.setTitle(resultSet.getString("title"));
                 article.setArticle(resultSet.getString("article"));
-                article.setUsername(resultSet.getString(username));
+                article.setUsername(resultSet.getString("username"));
+                article.setCreated_at(resultSet.getDate("created_at").toLocalDate());
+                article.setUpdated_at(resultSet.getDate("updated_at").toLocalDate());
 
                 articles.add(article);
             }
@@ -55,17 +57,29 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public List<Article> selectAllArticles() {
-        String SELECT_All_Articles = "SELECT title, article, username FROM article;";
+        String SELECT_All_Articles = "SELECT id, title,article, username, created_at, updated_at FROM article " +
+                "ORDER BY created_at DESC, updated_at DESC";
         List<Article> articles = new ArrayList<>();
         try {
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement statement = connection.prepareStatement(SELECT_All_Articles);
-            statement.executeUpdate();
+            ResultSet resultSet = statement.executeQuery();
 
-        }catch (Exception e){
+            while (resultSet.next()) {
+                Article article = new Article();
+                article.setId(resultSet.getInt("id"));
+                article.setTitle(resultSet.getString("title"));
+                article.setArticle(resultSet.getString("article"));
+                article.setUsername(resultSet.getString("username"));
+                article.setCreated_at(resultSet.getDate("created_at").toLocalDate());
+                article.setUpdated_at(resultSet.getDate("updated_at").toLocalDate());
+
+                articles.add(article);
+            }
+        } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        return null;
+        return articles;
     }
 
     @Override
@@ -95,7 +109,7 @@ public class ArticleDaoImpl implements ArticleDao {
 
     @Override
     public void updateArticle(Article article) {
-        String UPDATE_ARTICLE="UPDATE article SET title=?, article=?, WHERE id=?;";
+        String UPDATE_ARTICLE="UPDATE article SET title=?, article=? WHERE id=?;";
         try{
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement statement = connection.prepareStatement(UPDATE_ARTICLE);
@@ -116,6 +130,7 @@ public class ArticleDaoImpl implements ArticleDao {
         try{
             Connection connection = ConnectionUtil.getConnection();
             PreparedStatement statement = connection.prepareStatement(DELETE_ARTICLE);
+            statement.setInt(1,id);
             statement.executeUpdate();
         }catch (Exception e){
             System.out.println(e.getMessage());
