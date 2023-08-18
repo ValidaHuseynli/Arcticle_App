@@ -27,7 +27,10 @@ public class ArticleServlets extends HttpServlet {
     }
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher("/article.jsp").forward(request,response);
+        String username = (String) request.getSession().getAttribute("username");
+        List<Article> articles = articleDao.selectUserArticles(username);
+        request.setAttribute("articles", articles);
+        request.getRequestDispatcher("/article.jsp").forward(request, response);
     }
 
 
