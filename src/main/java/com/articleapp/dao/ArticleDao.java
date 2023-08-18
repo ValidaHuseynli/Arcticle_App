@@ -9,6 +9,6 @@ public interface ArticleDao {
     List<Article> selectUserArticles(String username);
     List<Article> selectAllArticles();
    Article getArticle(int id);
-    void updateArticle(Article todo);
+    void updateArticle(Article article);
     void deleteArticle(int id);
 }
