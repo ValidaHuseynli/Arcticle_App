@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <header>
-  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: tomato">
+  <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #20c997;">
     <div>
       <a href="#" class="navbar-brand">Article App</a>
     </div>
