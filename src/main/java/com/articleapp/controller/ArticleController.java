@@ -34,7 +34,7 @@ public class ArticleController extends HttpServlet {
             try {
                 switch (action) {
                     case "new":
-                        request.getRequestDispatcher("article-form.jsp").forward(request, response);
+                        request.getRequestDispatcher("/article-form.jsp").forward(request, response);
                         break;
                     case "insert":
                         insertArticle(request, response);
@@ -101,7 +101,7 @@ public class ArticleController extends HttpServlet {
     private void deleteArticle(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         articleDao.deleteArticle(id);
-        response.sendRedirect(request.getContextPath() + "/user/todo");
+        response.sendRedirect(request.getContextPath() + "/user/article");
     }
 
 
@@ -117,7 +117,5 @@ public class ArticleController extends HttpServlet {
         List<Article> articles = articleDao.selectAllArticles();
         request.setAttribute("articles", articles);
         request.getRequestDispatcher("/article.jsp").forward(request, response);
-
-
     }
 }
