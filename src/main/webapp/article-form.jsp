@@ -38,8 +38,11 @@
 
                                 <fieldset class="form-group">
                                     <label>Article</label>
-                                    <textarea type="textarea" value="<c:out value='${article.article}' />" class="form-control"
-                                              name="article" minlength="5"></textarea>
+                                    <input type="text" value="<c:out value='${article.article}'/>" class="form-control"
+                                           name="article" required="required" minlength="5">
+                                    
+                                    
+                          
                                 </fieldset>
 
                                 <button type="submit" class="btn btn-success">Save</button>
